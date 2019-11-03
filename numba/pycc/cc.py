@@ -64,6 +64,7 @@ class CC(object):
 
         self._source_path = dct.get('__file__', '')
         self._source_module = source_module
+        self._package_path = source_module[:source_module.rfind(".") + 1]
         self._toolchain = Toolchain()
         self._verbose = False
         # By default, output in directory of caller module
@@ -248,7 +249,7 @@ class CC(object):
         library_dirs = (kwargs.pop('library_dirs', [])
                         + self._toolchain.get_python_library_dirs())
 
-        ext = _CCExtension(name=self._basename,
+        ext = _CCExtension(name=".".join((self._package_path, self._basename)),
                            sources=self._get_mixin_sources(),
                            depends=depends,
                            define_macros=macros,
